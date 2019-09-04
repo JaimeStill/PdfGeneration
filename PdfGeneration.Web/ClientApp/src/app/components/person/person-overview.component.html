@@ -1,0 +1,30 @@
+<section fxLayout="column"
+         fxLayoutAlign="start stretch"
+         class="background card elevated">
+  <section fxLayout="row"
+           fxLayoutAlign="start stretch">
+    <img class="profile-image"
+         src="assets/placeholder.png"
+         alt="placeholder">
+    <section fxLayout="column"
+             fxLayoutAlign="space-evenly center"
+             class="background stacked container">
+      <button mat-icon-button
+              class="elevated"
+              matTooltip="View"
+              (click)="view.emit(person)">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+      </button>
+      <button mat-icon-button
+              class="elevated"
+              color="accent"
+              matTooltip="Pin"
+              (click)="pin.emit(person)">
+        <mat-icon class="fa-lg"
+                  fontSet="fas"
+                  fontIcon="fa-thumbtack"></mat-icon>
+      </button>
+    </section>
+  </section>
+  <h2>{{person.lastName}}, {{person.firstName}}</h2>
+</section>

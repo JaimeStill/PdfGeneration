@@ -1,0 +1,277 @@
+<div class="mat-typography">
+  <h2 mat-dialog-title>{{dialogTitle}}</h2>
+  <mat-dialog-content>
+    <section fxLayout="column"
+             fxLayoutAlign="start stretch">
+      <section fxLayout="row"
+               fxLayoutAlign="start center">
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Last"
+                 [(ngModel)]="person.lastName">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="First"
+                 [(ngModel)]="person.firstName">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Middle"
+                 [(ngModel)]="person.middleName">
+        </mat-form-field>
+      </section>
+      <section fxLayout="row"
+               fxLayoutAlign="start center">
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Suffix"
+                 [(ngModel)]="person.suffix">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Nickname"
+                 [(ngModel)]="person.nickname">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Rank"
+                 [(ngModel)]="person.rank">
+        </mat-form-field>
+      </section>
+      <section fxLayout="row"
+               fxLayoutAlign="start center">
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Branch"
+                 [(ngModel)]="person.branch">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Unit"
+                 [(ngModel)]="person.unit">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Section Assigned"
+                 [(ngModel)]="person.sectionAssigned">
+        </mat-form-field>
+      </section>
+      <section fxLayout="row"
+               fxLayoutAlign="start center">
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Attached Section"
+                 [(ngModel)]="person.attachedSection">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="SSN"
+                 [(ngModel)]="person.ssn">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="MOS Rate"
+                 [(ngModel)]="person.mosRate">
+        </mat-form-field>
+      </section>
+      <section fxLayout="row"
+               fxLayoutAlign="start center">
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="MPC"
+                 [(ngModel)]="person.mpc">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="BASD"
+                 [(ngModel)]="person.basd">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="ETS"
+                 [(ngModel)]="person.ets">
+        </mat-form-field>
+      </section>
+      <section fxLayout="row"
+               fxLayoutAlign="start center">
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Date of Rank"
+                 [(ngModel)]="person.dor">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="PEBD"
+                 [(ngModel)]="person.pebd">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="EDIPI"
+                 [(ngModel)]="person.edipi">
+        </mat-form-field>
+      </section>
+      <section fxLayout="row"
+               fxLayoutAlign="start center">
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Home Phone"
+                 [(ngModel)]="person.homePhone">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Duty Phone"
+                 [(ngModel)]="person.dutyPhone">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Other Phone"
+                 [(ngModel)]="person.otherPhone">
+        </mat-form-field>
+      </section>
+      <section fxLayout="row"
+               fxLayoutAlign="start center">
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Date of Birth"
+                 [matDatepicker]="dateBirth"
+                 [(ngModel)]="person.dob">
+          <mat-datepicker-toggle matSuffix
+                                 [for]="dateBirth"></mat-datepicker-toggle>
+          <mat-datepicker #dateBirth></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="State of Birth"
+                 [(ngModel)]="person.stateOfBirth">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="City of Birth"
+                 [(ngModel)]="person.cityOfBirth">
+        </mat-form-field>
+      </section>
+      <section fxLayout="row"
+               fxLayoutAlign="start center">
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Mother's Maiden Name"
+                 [(ngModel)]="person.mothersMaidenName">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Height"
+                 [(ngModel)]="person.height">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Weight"
+                 [(ngModel)]="person.weight">
+        </mat-form-field>
+      </section>
+      <section fxLayout="row"
+               fxLayoutAlign="start center">
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Gender"
+                 [(ngModel)]="person.gender">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Religion"
+                 [(ngModel)]="person.religion">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Race"
+                 [(ngModel)]="person.race">
+        </mat-form-field>
+      </section>
+      <section fxLayout="row"
+               fxLayoutAlign="start center">
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Finger Prints"
+                 [(ngModel)]="person.fingerPrints">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="BDI"
+                 [(ngModel)]="person.bdi">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Hair Color"
+                 [(ngModel)]="person.hairColor">
+        </mat-form-field>
+      </section>
+      <section fxLayout="row"
+               fxLayoutAlign="start center">
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Eye Color"
+                 [(ngModel)]="person.eyeColor">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Blood Type"
+                 [(ngModel)]="person.bloodType">
+        </mat-form-field>
+        <mat-form-field floatLabel="never"
+                        fxFlex>
+          <input matInput
+                 placeholder="Allergies"
+                 [(ngModel)]="person.allergies">
+        </mat-form-field>
+      </section>
+      <mat-form-field floatLabel="never">
+        <textarea matInput
+                  rows="5"
+                  placeholder="Remarks"
+                  [(ngModel)]="person.remarks"></textarea>
+      </mat-form-field>
+    </section>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button
+            color="accent"
+            (click)="savePerson()">Save</button>
+    <button mat-button
+            mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
+</div>

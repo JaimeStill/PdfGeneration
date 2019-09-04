@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DevExpress.Data" Version="19.1.5" />
+    <PackageReference Include="DevExpress.Document.Processor" Version="19.1.5" />
+    <PackageReference Include="DevExpress.Pdf.Core" Version="19.1.5" />
+    <PackageReference Include="DevExpress.Pdf.Drawing" Version="19.1.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.4">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PdfGeneration.Core\PdfGeneration.Core.csproj" />
+    <ProjectReference Include="..\PdfGeneration.Identity\PdfGeneration.Identity.csproj" />
+  </ItemGroup>
+
+</Project>

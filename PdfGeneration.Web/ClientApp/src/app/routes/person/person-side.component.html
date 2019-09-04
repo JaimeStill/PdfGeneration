@@ -1,0 +1,14 @@
+<ng-template #loading>
+  <mat-progress-bar mode="indeterminate"
+                    color="accent"></mat-progress-bar>
+</ng-template>
+<section *ngIf="service.person$ | async as person else loading"
+         class="container">
+  <person-card [person]="person"
+               [pinnable]="false"
+               [closable]="true"
+               [editable]="false"
+               [removable]="false"
+               actionLayout="start center"
+               (close)="close()"></person-card>
+</section>

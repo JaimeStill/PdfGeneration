@@ -1,0 +1,16 @@
+<ng-template #loading>
+  <mat-progress-bar mode="indeterminate"
+                    color="accent"></mat-progress-bar>
+</ng-template>
+<section *ngIf="service.person$ | async as person else loading"
+         class="container"
+         fxLayout="row"
+         fxLayoutAlign="start start">
+  <person-card [person]="person"
+               (pin)="pinPerson($event)"
+               (edit)="editPerson($event)"
+               (remove)="removePerson($event)"
+               (getPdf)="getPdf($event)"></person-card>
+  <person-details fxFlex
+                  [personId]="personId"></person-details>
+</section>

@@ -1,0 +1,44 @@
+<div class="mat-typography mat-app-background app-frame"
+     fxLayout="column"
+     [ngClass]="themeClass">
+  <ng-container *ngIf="banner.config$ | async as config else loading">
+    <banner [label]="config.label"
+            [background]="config.background"
+            [color]="config.color"></banner>
+    <mat-toolbar color="primary"
+                 class="app-toolbar">
+      <button mat-icon-button
+              (click)="sidepanel.toggleState()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span fxFlex>Title</span>
+      <button mat-icon-button
+              [matMenuTriggerFor]="menu">
+        <mat-icon>format_color_fill</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item
+                *ngFor="let t of theme.themes$ | async"
+                (click)="theme.setTheme(t)">{{t.display}}</button>
+      </mat-menu>
+    </mat-toolbar>
+    <section class="app-body"
+             fxFlex
+             fxFill
+             fxLayout="row"
+             fxLayoutAlign="start stretch">
+      <sidepanel></sidepanel>
+      <div fxFlex
+           class="app-panel">
+        <router-outlet></router-outlet>
+      </div>
+      <section class="app-side">
+        <router-outlet name="side"></router-outlet>
+      </section>
+    </section>
+  </ng-container>
+</div>
+<ng-template #loading>
+  <mat-progress-bar mode="indeterminate"
+                    color="accent"></mat-progress-bar>
+</ng-template>

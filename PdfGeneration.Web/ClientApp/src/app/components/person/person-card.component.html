@@ -1,0 +1,231 @@
+<section>
+  <section fxLayout="row"
+           fxLayoutAlign="start stretch">
+    <img class="profile-image"
+         src="assets/placeholder.png"
+         alt="placeholder">
+    <section fxLayout="column"
+             [fxLayoutAlign]="actionLayout"
+             class="background stacked container"
+             *ngIf="closable || pinnable || viewable || editable || removable || getPDF">
+      <button mat-icon-button
+              class="elevated"
+              matTooltip="Close"
+              (click)="close.emit()"
+              *ngIf="closable">
+        <mat-icon>close</mat-icon>
+      </button>
+      <button mat-icon-button
+              class="elevated"
+              matTooltip="View"
+              (click)="view.emit(person)"
+              *ngIf="viewable">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+      </button>
+      <button mat-icon-button
+              class="elevated"
+              color="accent"
+              matTooltip="Pin"
+              (click)="pin.emit(person)"
+              *ngIf="pinnable">
+        <mat-icon class="fa-lg" fontSet="fas" fontIcon="fa-thumbtack"></mat-icon>
+      </button>
+      <button mat-icon-button
+              class="elevated"
+              matTooltip="Edit"
+              (click)="edit.emit(person)"
+              color="primary"
+              *ngIf="editable">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button
+              class="elevated"
+              matTooltip="Remove"
+              (click)="remove.emit(person)"
+              color="warn"
+              *ngIf="removable">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-icon-button
+              class="elevated"
+               matTooltip="Download Form"
+              (click)="getPdf.emit(person)"
+              color="black"
+              *ngIf="getPDF">
+        <mat-icon>description</mat-icon>
+      </button>
+    </section>
+  </section>
+  <h2>{{person.lastName}}, {{person.firstName}}</h2>
+  <section fxLayout="row"
+           *ngIf="person?.nickname">
+    <p fxFlex>Nickname:</p>
+    <p>{{person.nickname}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.rank">
+    <p fxFlex>Rank:</p>
+    <p>{{person.rank}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.branch">
+    <p fxFlex>Branch:</p>
+    <p>{{person.branch}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.unit">
+    <p fxFlex>Unit:</p>
+    <p>{{person.unit}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.sectionAssigned">
+    <p fxFlex>Section Assigned:</p>
+    <p>{{person.sectionAssigned}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.attachedSection">
+    <p fxFlex>Attached Section:</p>
+    <p>{{person.attachedSection}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.ssn">
+    <p fxFlex>SSN:</p>
+    <p>{{person.ssn}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.mosRate">
+    <p fxFlex>MOS Rate:</p>
+    <p>{{person.mosRate}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.mpc">
+    <p fxFlex>MPC:</p>
+    <p>{{person.mpc}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.basd">
+    <p fxFlex>BASD:</p>
+    <p>{{person.basd}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.ets">
+    <p fxFlex>ETS:</p>
+    <p>{{person.ets}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.dor">
+    <p fxFlex>DOR:</p>
+    <p>{{person.dor}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.pebd">
+    <p fxFlex>PEBD:</p>
+    <p>{{person.pebd}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.edipi">
+    <p fxFlex>EDIPI:</p>
+    <p>{{person.edipi}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.middleName">
+    <p fxFlex>Middle:</p>
+    <p>{{person.middleName}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.suffix">
+    <p fxFlex>Suffix:</p>
+    <p>{{person.suffix}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.homePhone">
+    <p fxFlex>Home Phone:</p>
+    <p>{{person.homePhone}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.dutyPhone">
+    <p fxFlex>Duty Phone:</p>
+    <p>{{person.dutyPhone}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.otherPhone">
+    <p fxFlex>Other Phone:</p>
+    <p>{{person.otherPhone}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.dob">
+    <p fxFlex>Date of Birth:</p>
+    <p>{{person.dob | date:'dd MMM yyyy'}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.stateOfBirth">
+    <p fxFlex>State of Birth:</p>
+    <p>{{person.stateOfBirth}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.cityOfBirth">
+    <p fxFlex>City of Birth:</p>
+    <p>{{person.cityOfBirth}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.mothersMaidenName">
+    <p fxFlex>Mother's Maiden Name:</p>
+    <p>{{person.mothersMaidenName}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.height">
+    <p fxFlex>Height:</p>
+    <p>{{person.height}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.weight">
+    <p fxFlex>Weight:</p>
+    <p>{{person.weight}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.gender">
+    <p fxFlex>Gender:</p>
+    <p>{{person.gender}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.religion">
+    <p fxFlex>Religion:</p>
+    <p>{{person.religion}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.race">
+    <p fxFlex>Race:</p>
+    <p>{{person.race}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.fingerPrints">
+    <p fxFlex>Finger Prints:</p>
+    <p>{{person.fingerPrints}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.bdi">
+    <p fxFlex>BDI:</p>
+    <p>{{person.bdi}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.hairColor">
+    <p fxFlex>Hair Color:</p>
+    <p>{{person.hairColor}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.eyeColor">
+    <p fxFlex>Eye Color:</p>
+    <p>{{person.eyeColor}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.bloodType">
+    <p fxFlex>Blood Type:</p>
+    <p>{{person.height}}</p>
+  </section>
+  <section fxLayout="row"
+           *ngIf="person?.allergies">
+    <p fxFlex>Allergies:</p>
+    <p>{{person.allergies}}</p>
+  </section>
+  <p *ngIf="person?.remarks">{{person.remarks}}</p>
+</section>

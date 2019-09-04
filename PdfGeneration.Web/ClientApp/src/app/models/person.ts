@@ -1,0 +1,50 @@
+import { PersonAssociate } from './person-associate';
+
+export interface Person {
+  id: number;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  ssn: string;
+  suffix: string;
+  nickname: string;
+  homePhone: string;
+  dutyPhone: string;
+  otherPhone: string;
+  dob: Date;
+  stateOfBirth: string;
+  cityOfBirth: string;
+  mothersMaidenName: string;
+  religion: string;
+  race: string;
+  fingerPrints: string;
+  bdi: string;
+  unit: string;
+  hairColor: string;
+  sectionAssigned: string;
+  eyeColor: string;
+  attachedSection: string;
+  bloodType: string;
+  mosRate: string;
+  height: string;
+  weight: string;
+  gender: string;
+  mpc: string;
+  rank: string;
+  basd: Date;
+  ets: Date;
+  dor: Date;
+  pebd: Date;
+  branch: string;
+  edipi: string;
+  allergies: string;
+  remarks: string;
+  picUrl: string;
+  picPath: string;
+  picFile: string;
+  picName: string;
+  isDeleted: boolean;
+
+  associates: PersonAssociate[];
+  people: PersonAssociate[];
+}

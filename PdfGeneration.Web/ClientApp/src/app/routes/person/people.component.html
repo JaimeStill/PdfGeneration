@@ -1,0 +1,30 @@
+<mat-toolbar>
+  <span>People</span>
+  <button mat-button
+          color="accent"
+          (click)="addPerson()">Add</button>
+</mat-toolbar>
+<ng-template #loading>
+  <mat-progress-bar mode="indeterminate"
+                    color="accent"></mat-progress-bar>
+</ng-template>
+<section class="container"
+         fxLayout="column"
+         fxLayoutAlign="start stretch">
+  <searchbar label="Search People"
+             [minimum]="1"
+             (search)="service.searchPeople($event)"
+             (clear)="service.getPeople()"></searchbar>
+</section>
+<ng-container *ngIf="service.people$ | async as people else loading">
+  <section *ngIf="people.length > 0"
+           class="container"
+           fxLayout="row | wrap"
+           fxLayoutAlign="start start">
+    <person-link *ngFor="let p of people"
+                 [person]="p"
+                 (selected)="viewPerson($event)"></person-link>
+  </section>
+  <p class="mat-subheading-2"
+     *ngIf="!(people.length > 0)">No People Found</p>
+</ng-container>

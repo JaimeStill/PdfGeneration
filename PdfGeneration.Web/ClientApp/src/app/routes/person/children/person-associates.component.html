@@ -1,0 +1,18 @@
+<mat-toolbar>Associates</mat-toolbar>
+<ng-template #loading>
+  <mat-progress-bar mode="indeterminate"
+                    color="accent"></mat-progress-bar>
+</ng-template>
+<section *ngIf="service.associates$ | async as associates else loading"
+         class="container"
+         fxLayout="row"
+         fxLayoutAlign="start start">
+  <ng-container *ngIf="associates?.length > 0">
+    <person-overview *ngFor="let person of associates"
+                     [person]="person"
+                     (view)="viewPerson($event)"
+                     (pin)="pinPerson($event)"></person-overview>
+  </ng-container>
+  <p class="mat-subheading-2"
+     *ngIf="!(associates?.length > 0)">No Associates found</p>
+</section>

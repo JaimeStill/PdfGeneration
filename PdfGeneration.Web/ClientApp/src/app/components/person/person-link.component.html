@@ -1,0 +1,11 @@
+<section class="clickable background card elevated"
+         fxLayout="row"
+         fxLayoutAlign="start center"
+         [style.width.px]="width"
+         (click)="selected.emit(person)"
+         matRipple>
+  <img class="thumbnail"
+       src="assets/placeholder.png"
+       alt="placeholder">
+  <p class="mat-body-strong">{{person.lastName}}, {{person.firstName}}</p>
+</section>

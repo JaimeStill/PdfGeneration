@@ -1,0 +1,11 @@
+<nav mat-tab-nav-bar>
+  <a mat-tab-link
+     mat-icon-button
+     routerLink="/person/{{personId}}/associates"
+     routerLinkActive="active"
+     matTooltip="Associates"
+     disableRipple>
+    <mat-icon>supervisor_account</mat-icon>
+  </a>
+</nav>
+<router-outlet></router-outlet>
