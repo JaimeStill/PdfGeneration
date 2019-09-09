@@ -17,7 +17,7 @@ export class PersonService {
   private truePersonId = new BehaviorSubject<number>(null);
   private truePerson = new BehaviorSubject<Person>(null);
 
-  // pdf: FormData;
+  pdf: FormData;
   people$ = this.people.asObservable();
   truePeople$ = this.truePeople.asObservable();
   associates$ = this.associates.asObservable();
@@ -31,7 +31,7 @@ export class PersonService {
     private snacker: SnackerService,
   ) { }
 
-  // public upload: UploadService;
+   // public upload: UploadService;
 
   getPeople = () => this.http.get<Person[]>('/api/person/getPeople')
     .subscribe(
@@ -272,13 +272,13 @@ export class PersonService {
         );
     });
 
-    // setPDF(pdf: FormData) {
-    //   this.pdf = pdf;
-    // }
+//    setPDF(pdf: FormData) {
+//       this.pdf = pdf;
+//     }
 
-    getPdf = (person: Person, id: number): Promise<boolean> =>
+    generatePdf = (person: Person, id: number): Promise<boolean> =>
     new Promise((resolve) => {
-      this.http.post<Person>(`/api/person/getPdf`, person)
+      this.http.post<Person>(`/api/person/generatePdf`, person)
         .subscribe(
           data => {
             this.person.next(data);

@@ -6,10 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DevExpress.Data" Version="19.1.5" />
-    <PackageReference Include="DevExpress.Document.Processor" Version="19.1.5" />
-    <PackageReference Include="DevExpress.Pdf.Core" Version="19.1.5" />
-    <PackageReference Include="DevExpress.Pdf.Drawing" Version="19.1.5" />
+    <PackageReference Include="DevExpress.Data" Version="19.1.4" />
+    <PackageReference Include="DevExpress.Document.Processor" Version="19.1.4" />
+    <PackageReference Include="DevExpress.Pdf.Core" Version="19.1.4" />
+    <PackageReference Include="DevExpress.Pdf.Drawing" Version="19.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.4">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

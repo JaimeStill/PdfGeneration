@@ -86,11 +86,13 @@ namespace PdfGeneration.Web.Controllers
         [HttpPost("[action]")]
         public async Task RemovePersonAssociate([FromBody]PersonAssociate personAssociate) => await db.RemovePersonAssociate(personAssociate);
 
-        // [HttpPost("[action]/{name}")]
-        // public async Task GeneratePdf([FromBody]Person person, [FromRoute]string name)
-        // {
-        //     var file = person.GeneratePdfFile(config.DirectoryBasePath, name);
-        //     await person.GeneratePdf(file, $"{env.ContentRootPath}/PDFTemplates/CC-App.pdf");
-        // }        
+        [HttpPost("[action]")]
+        public async Task GeneratePdf([FromBody]Person person, [FromRoute]string pdfTemplate)
+        {
+             var file = person.GeneratePdfFile(config.DirectoryBasePath, pdfTemplate);
+            //await person.GeneratePdf(file, $"{env.ContentRootPath}/PDFTemplates/SS5-App.pdf");    //SSN Application
+            await person.GeneratePdf(file, $"{env.ContentRootPath}/PDFTemplates/447-NC.pdf");     //NC Drivers License Application
+            //await person.GeneratePdf(file, $"{env.ContentRootPath}/PDFTemplates/CC-App.pdf");     //Credit Card Application
+        }        
     }
 }

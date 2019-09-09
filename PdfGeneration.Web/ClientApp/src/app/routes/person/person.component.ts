@@ -70,11 +70,11 @@ export class PersonComponent implements OnInit {
       }
     });
 
-    getPdf = (person: Person) => this.dialog.open(ConfirmDialog)
+    generatePdf = (person: Person) => this.dialog.open(ConfirmDialog)
     .afterClosed()
     .subscribe(async result => {
       if (result) {
-        const res = await this.service.getPdf(person, person.id);
+        const res = await this.service.generatePdf(person, person.id);
         res && this.navigate();
       }
     });

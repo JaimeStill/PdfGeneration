@@ -7,7 +7,7 @@
     <section fxLayout="column"
              [fxLayoutAlign]="actionLayout"
              class="background stacked container"
-             *ngIf="closable || pinnable || viewable || editable || removable || getPDF">
+             *ngIf="closable || pinnable || viewable || editable || removable || generatePDF">
       <button mat-icon-button
               class="elevated"
               matTooltip="Close"
@@ -49,9 +49,9 @@
       <button mat-icon-button
               class="elevated"
                matTooltip="Download Form"
-              (click)="getPdf.emit(person)"
+              (click)="generatePdf.emit(person)"
               color="black"
-              *ngIf="getPDF">
+              *ngIf="generatePDF">
         <mat-icon>description</mat-icon>
       </button>
     </section>

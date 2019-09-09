@@ -18,12 +18,12 @@ export class PersonCardComponent {
   @Input() pinnable = true;
   @Input() editable = true;
   @Input() removable = true;
-  @Input() getPDF = true;
+  @Input() generatePDF = true;
   @Input() actionLayout = 'space-evenly center';
   @Output() close = new EventEmitter();
   @Output() view = new EventEmitter<Person>();
   @Output() pin = new EventEmitter<Person>();
   @Output() edit = new EventEmitter<Person>();
   @Output() remove = new EventEmitter<Person>();
-  @Output() getPdf = new EventEmitter<Person>();
+  @Output() generatePdf = new EventEmitter<Person>();
 }
