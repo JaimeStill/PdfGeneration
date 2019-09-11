@@ -14,6 +14,16 @@ namespace PdfGeneration.Core.Extensions
     {
         private static readonly string urlPattern = "[^a-zA-Z0-9-.]";
 
+        public static void EnsureFileDirectoryExists(this string path)
+        {
+            var file = new FileInfo(path);
+            
+            if (!Directory.Exists(file.Directory.FullName))
+            {
+                Directory.CreateDirectory(file.Directory.FullName);
+            }
+        }
+
         public static void EnsureDirectoryExists(this string path)
         {
             if (!Directory.Exists(path))

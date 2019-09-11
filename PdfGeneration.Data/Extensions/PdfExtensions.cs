@@ -11,7 +11,7 @@ namespace PdfGeneration.Data.Extensions
 {
     public static class PdfExtensions
     {
-        
+
         public static string GeneratePdfFile(this Person person, string basePath, string name)
         {
             return $@"{basePath}{person.LastName}_{person.FirstName}_{name}_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.pdf";
@@ -27,24 +27,30 @@ namespace PdfGeneration.Data.Extensions
 
                 var data = processor.GetFormData();
                 var fields = processor.GetFormFieldNames();
+                var isMultiple = fields.Any(x => x.ToLower().StartsWith("z.") || x.ToLower().StartsWith("y."));
 
                 foreach (var field in fields)
                 {
-                    if (int.TryParse(field.Split('.').Last(), out int res))
+                    if (field.ToLower().StartsWith("x.") || field.ToLower().StartsWith("y.") || field.ToLower().StartsWith("z."))
                     {
-                        data.SetSingleField(entity, field);
-                    }
-                    else if (field.Split('.').Last().ToLower() == "checkbox")
-                    {
-                        data.SetCheckbox(entity, field);
-                    }
-                    else
-                    {
-                        data.SetValue(entity, field);
+                        entity = isMultiple ? entity.GetEntitySub(field.Split('.')[0]) : entity;
+
+                        if (entity != null)
+                        {
+                            if (int.TryParse(field.Split('.').Last(), out int res))
+                            {
+                                data.SetSingleField(entity, field);
+                            }
+                            else
+                            {
+                                data.SetValue(entity, field);
+                            }
+                        }
                     }
                 }
 
                 processor.ApplyFormData(data);
+                file.EnsureFileDirectoryExists();
                 processor.SaveDocument(file);
             }
         });
@@ -52,19 +58,98 @@ namespace PdfGeneration.Data.Extensions
         static void SetSingleField(this PdfFormData data, object entity, string field)
         {
             var splitField = field.Split('.');
-            try{
             if (entity.IsMatch(splitField[splitField.Length - 2]))
             {
-                var entityData = entity.GetType()
-                    .GetProperty(splitField[splitField.Length - 2])
-                    .GetValue(entity);
-
-                var fieldData = entityData
-                    .ToString()
+                var entityData = entity
+                    .GetEntityValue(splitField[splitField.Length - 2])
                     .UrlEncode("[^a-zA-Z0-9]");
-                data[field].Value = fieldData[Int32.Parse(splitField[splitField.Length-1])-1].ToString();
+
+                data[field].Value = entityData[Int32.Parse(splitField[splitField.Length - 1]) - 1].ToString();
             }
-            }catch{}
+        }
+
+        static void SetValue(this PdfFormData data, object entity, string field)
+        {
+            var splitField = field.Split('.');
+            if (splitField.Last().IsSpecialType())
+            {
+                data.SetSpecialValue(entity, field, splitField);
+            }
+            else
+            {
+                if (entity.IsMatch(splitField[splitField.Length - 1]))
+                {
+                    var entityData = entity.GetEntityValue(splitField[splitField.Length - 1]);
+
+                    if (!string.IsNullOrEmpty(entityData))
+                    {
+                        switch (Type.GetTypeCode(data[field].GetType()))
+                        {
+                            case TypeCode.DateTime:
+                                data[field].Value = Convert.ToDateTime(entityData);
+                                break;
+                            case TypeCode.Int32:
+                                data[field].Value = int.Parse(entityData);
+                                break;
+                            default:
+                                data[field].Value = entityData.ToString();
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        static bool IsSpecialType(this string type)
+        {
+            if (type.ToLower().Contains("phone"))
+            {
+                return true;
+            }
+            else
+            {
+                switch (type.ToLower())
+                {
+                    case "checkbox":
+                    case "height":
+                    case "date":
+                    case "name":
+                    case "ssn":
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        }
+
+        static void SetSpecialValue(this PdfFormData data, object entity, string field, string[] splitField)
+        {
+            if (splitField.Last().ToLower().Contains("phone"))
+            {
+                data.SetPhoneNumber(field, entity);
+            }
+            else if (splitField.Last().ToLower() == "date" && splitField.Length == 4)
+            {
+                data.SetDate(field, entity);
+            }
+            else
+            {
+                switch (splitField.Last().ToLower())
+                {
+                    case "checkbox":
+                        data.SetCheckbox(entity, field);
+                        break;
+                    case "height":
+                        data.SetHeight(field, entity);
+                        break;
+                    case "name":
+                        data.SetName(field, entity);
+                        break;
+                    case "ssn":
+                        data.SetSsn(field, entity);
+                        break;
+                }
+            }
         }
 
         static void SetCheckbox(this PdfFormData data, object entity, string field)
@@ -73,10 +158,8 @@ namespace PdfGeneration.Data.Extensions
 
             if (entity.IsMatch(splitField[splitField.Length - 3]))
             {
-                var entityData = entity.GetType()
-                    .GetProperty(splitField[splitField.Length - 3])
-                    .GetValue(entity)
-                    .ToString();
+                var entityData = entity.GetEntityValue(splitField[splitField.Length - 3]);
+
                 if (entityData.ToLower() == splitField[splitField.Length - 2].ToLower())
                 {
                     data[field].Value = "On";
@@ -84,126 +167,173 @@ namespace PdfGeneration.Data.Extensions
             }
         }
 
-        static void SetValue(this PdfFormData data, object entity, string field)
+        public static void SetHeight(this PdfFormData data, string field, object entity)
+        {
+            if (entity.IsMatch("Height"))
+            {
+                var check = entity.GetEntityValue("Height");
+                int height;
+
+                if (!string.IsNullOrEmpty(check) && int.TryParse(check, out height))
+                {
+                    int feet = height / 12;
+                    int inches = height % 12;
+
+                    if (field.ToLower().Contains("feet"))
+                        data[field].Value = $"{feet.ToString()}'";
+                    else if (field.ToLower().Contains("inches"))
+                        data[field].Value = $"{inches.ToString()}\"";
+                    else
+                        data[field].Value = height;
+                }
+            }
+        }
+
+        public static void SetDate(this PdfFormData data, string field, object entity)
         {
             var splitField = field.Split('.');
-            if (entity.IsMatch(splitField.Last()))
+            var dateType = splitField[1];
+            var format = splitField[2];
+
+            if (entity.IsMatch(dateType) && entity.HasValue(dateType))
             {
-                var entityData = entity.GetType()
-                .GetProperty(splitField[splitField.Length - 1])
-                .GetValue(entity)
-                .ToString();
-                if (splitField.Last().IsSpecialType())
+                var date = (DateTime)entity.GetValue(dateType);
+                data[field].Value = date.ToString(format);
+            }
+        }
+
+        public static void SetName(this PdfFormData data, string field, object entity)
+        {
+            switch (field.Split('.')[1].ToLower())
+            {
+                case "last":
+                    data[field].Value = GetLast(entity);
+                    break;
+                case "first":
+                    data[field].Value = GetFirst(entity);
+                    break;
+                case "m":
+                    data[field].Value = GetM(entity);
+                    break;
+                case "middle":
+                    data[field].Value = GetMiddle(entity);
+                    break;
+                case "firstlast":
+                    data[field].Value = $"{GetFirst(entity)} {GetLast(entity)}";
+                    break;
+                case "lastfirst":
+                    data[field].Value = $"{GetLast(entity)}, {GetFirst(entity)}";
+                    break;
+                case "firstmlast":
+                    data[field].Value = $"{GetFirst(entity)} {GetM(entity)}. {GetLast(entity)}";
+                    break;
+                case "firstmiddlelast":
+                    data[field].Value = $"{GetFirst(entity)} {GetMiddle(entity)} {GetLast(entity)}";
+                    break;
+                case "lastfirstm":
+                    data[field].Value = $"{GetLast(entity)}, {GetFirst(entity)} {GetM(entity)}.";
+                    break;
+                case "lastfirstmiddle":
+                    data[field].Value = $"{GetLast(entity)}, {GetFirst(entity)} {GetMiddle(entity)}";
+                    break;
+            }
+        }
+
+        public static void SetSsn(this PdfFormData data, string field, object entity)
+        {
+            if (entity.IsMatch("Ssn"))
+            {
+                var ssn = entity.GetEntityValue("Ssn");
+
+                if (!string.IsNullOrEmpty(ssn) && ssn.Contains("-"))
                 {
-                    data.SetSpecialValue(entity, entityData, field, splitField);
+                    var splitSsn = ssn.Split("-");
+
+                    if (field.ToLower().Contains("area"))
+                        data[field].Value = splitSsn[0];
+                    else if (field.ToLower().Contains("group"))
+                        data[field].Value = splitSsn[1];
+                    else if (field.ToLower().Contains("series"))
+                        data[field].Value = splitSsn[2];
+                    else
+                        data[field].Value = ssn;
                 }
-                else
+            }
+        }
+
+        // z.AreaCode.{Some}Phone
+        // z.Number.{Some}Phone
+        // z.Prefix.{Some}Phone
+        // z.Suffix.{Some}Phone
+        // z.{Some}Phone
+        public static void SetPhoneNumber(this PdfFormData data, string field, object entity)
+        {
+            var splitField = field.Split('.');
+            var phoneType = splitField[splitField.Length - 1];
+            var isSubset = splitField.Length == 3;
+
+            if (entity.IsMatch(phoneType))
+            {
+                data[field].Value = entity.GetPhoneValue(phoneType, splitField, isSubset);
+            }
+        }
+
+        public static string GetPhoneValue(this object entity, string phoneType, string[] splitField, bool isSubset)
+        {
+            var phoneNumber = entity.GetEntityValue(phoneType);
+
+            if (isSubset)
+            {
+                if (!string.IsNullOrEmpty(phoneNumber) && phoneNumber.Contains('-'))
                 {
-                    switch (Type.GetTypeCode(data[field].GetType()))
+                    var splitPhone = phoneNumber.Split('-');
+
+                    switch (splitField[1].ToLower())
                     {
-                        case TypeCode.DateTime:
-                            data[field].Value = Convert.ToDateTime(entityData);
-                            break;
-                        case TypeCode.Int32:
-                            data[field].Value = int.Parse(entityData);
-                            break;
-                        default:
-                            data[field].Value = entityData.ToString();
-                            break;
+                        case "areacode":
+                            return splitPhone[0];
+                        case "number":
+                            return $"{splitPhone[1]}-{splitPhone[2]}";
+                        case "prefix":
+                            return splitPhone[1];
+                        case "suffix":
+                            return splitPhone[2];
                     }
                 }
             }
+
+            return phoneNumber;
         }
 
-        public static bool IsSpecialType(this string type)
+        static object GetEntitySub(this object entity, string context) => context.ToLower() == "z" ?
+            entity.GetType()
+                .GetProperty("Associate")
+                .GetValue(entity) :
+            entity.GetType()
+                .GetProperty("Person")
+                .GetValue(entity);
+
+        static object GetValue(this object entity, string prop) => entity.GetType()
+            .GetProperty(prop)
+            .GetValue(entity);
+
+        static bool HasValue(this object entity, string prop) => entity.GetValue(prop) != null;
+
+        static string GetEntityValue(this object entity, string prop) => entity.HasValue(prop) ? entity.GetValue(prop).ToString() : string.Empty;
+
+        static string GetLast(this object entity) => entity.IsMatch("LastName") ? entity.GetEntityValue("LastName") : string.Empty;
+        static string GetFirst(this object entity) => entity.IsMatch("FirstName") ? entity.GetEntityValue("FirstName") : string.Empty;
+        static string GetMiddle(this object entity) => entity.IsMatch("MiddleName") ? entity.GetEntityValue("MiddleName") : string.Empty;
+        static string GetM(this object entity)
         {
-            switch (type.ToLower())
+            var mid = entity.GetMiddle();
+
+            if (!(string.IsNullOrEmpty(mid)))
             {
-                case "homephone":
-                case "height":
-                case "dob":
-                case "ssn":
-                    return true;
-                default:
-                    return false;
+                return mid[0].ToString().ToUpper();
             }
-        }
 
-        public static void SetSpecialValue(this PdfFormData data, object entity, string entityData, string field, string[] splitField)
-        {
-            switch (splitField.Last().ToLower())
-            {
-                case "homephone":
-                    data.SetPhoneNumber(field, entityData);
-                    break;
-                case "height":
-                    data.SetHeight(field, entityData);
-                    break;
-                case "dob":
-                    data.SetDob(field, entityData);
-                    break;
-                case "ssn":
-                    data.SetSsn(field, entityData);
-                    break;
-            }
-        }
-
-        public static void SetPhoneNumber(this PdfFormData data, string field, string entityData)
-        {
-            var splitField = entityData.Split("-");
-            Console.WriteLine("Split Field Length"+splitField.Length);
-            Console.WriteLine("Split Field: "+splitField[0]+splitField[1]);
-            if(field.ToLower().Contains("phonenumber"))
-                data[field].Value = $"{splitField[1]}-{splitField[2]}";
-            else if(field.ToLower().Contains("areacode"))
-                data[field].Value = splitField[0];
-            else
-                data[field].Value = entityData;
-            
-        }
-
-        public static void SetHeight(this PdfFormData data, string field, string entityData)
-        {
-
-            int feet = (Int32.Parse(entityData))/12;
-            int inches = (Int32.Parse(entityData))%12;
-
-            if(field.ToLower().Contains("feet"))
-                data[field].Value = $"{feet.ToString()}'";
-            else if(field.ToLower().Contains("inches"))
-                data[field].Value = $"{inches.ToString()}\"";
-            else
-                data[field].Value = entityData;
-
-        }
-
-        public static void SetDob(this PdfFormData data, string field, string entityData)
-        {
-            var splitField = entityData.Split("/");
-
-            if(field.ToLower().Contains("mm"))
-                data[field].Value = splitField.First();
-            else if(field.ToLower().Contains("dd"))
-                data[field].Value = splitField[1];
-            else if(field.ToLower().Contains("yyyy"))
-                data[field].Value = splitField.Last().Split(" ").First();
-            else
-                data[field].Value = entityData;
-        }
-
-        public static void SetSsn(this PdfFormData data, string field, string entityData)
-        {
-            var splitField = entityData.Split("-");
-
-            if(field.ToLower().Contains("area"))
-                data[field].Value = splitField[0];
-            else if (field.ToLower().Contains("group"))
-                data[field].Value = splitField[1];
-            else if (field.ToLower().Contains("series"))
-                data[field].Value = splitField[2];
-            else
-                data[field].Value = entityData;
-            
+            return mid;
         }
 
         //Method to match PDF Form fields to Database Entity Properties
@@ -211,7 +341,6 @@ namespace PdfGeneration.Data.Extensions
             .GetProperties()
             .Select(x => x.Name)
             .FirstOrDefault(x => x == field) != null;
-
 
         // TestReflection demo done in repl.it
         // https://repl.it/@JaimeStill/ReflectedExtensionsMethod
