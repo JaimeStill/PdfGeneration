@@ -90,9 +90,9 @@ namespace PdfGeneration.Web.Controllers
         public async Task GeneratePdf([FromBody]Person person, [FromRoute]string pdfTemplate)
         {
              var file = person.GeneratePdfFile(config.DirectoryBasePath, pdfTemplate);
-            //await person.GeneratePdf(file, $"{env.ContentRootPath}/PDFTemplates/SS5-App.pdf");    //SSN Application
-            await person.GeneratePdf(file, $"{env.ContentRootPath}/PDFTemplates/447-NC.pdf");     //NC Drivers License Application
-            //await person.GeneratePdf(file, $"{env.ContentRootPath}/PDFTemplates/CC-App.pdf");     //Credit Card Application
+            //await person.GeneratePdf(file, $"{env.WebRootPath}/templates/SS5-App.pdf");    //SSN Application
+            await person.GeneratePdf(file, $"{env.WebRootPath}/templates/447-NC.pdf");     //NC Drivers License Application
+            //await person.GeneratePdf(file, $"{env.WebRootPath}/templates/CC-App.pdf");     //Credit Card Application
         }        
     }
 }

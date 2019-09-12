@@ -152,21 +152,25 @@ namespace PdfGeneration.Data.Extensions
             }
         }
 
+        // x.{Label}.{Value}.Checkbox
+        // splitField[1] = {Label}
+        // splitField[2] = {Value}
         static void SetCheckbox(this PdfFormData data, object entity, string field)
         {
             var splitField = field.Split('.');
 
-            if (entity.IsMatch(splitField[splitField.Length - 3]))
+            if (entity.IsMatch(splitField[1]))
             {
-                var entityData = entity.GetEntityValue(splitField[splitField.Length - 3]);
+                var entityData = entity.GetEntityValue(splitField[1]);
 
-                if (entityData.ToLower() == splitField[splitField.Length - 2].ToLower())
+                if (entityData.ToLower() == splitField[2].ToLower())
                 {
                     data[field].Value = "On";
                 }
             }
         }
 
+        // x.Height
         public static void SetHeight(this PdfFormData data, string field, object entity)
         {
             if (entity.IsMatch("Height"))
